@@ -1,22 +1,62 @@
-img.list-item{
+.itemListCard {
     width: 100%;
-    max-width: 443.75px;
-    height: 443.75px;
+    height: 24rem;
 }
 
-p.list-item-card {
-    height: 48px;
+.itemListImg {
+    height: 16rem;
+    overflow: hidden;
+    background: #eee;
+    box-shadow: 0 2px 4px -2px #999;
 }
 
-img.item-view {
-    width: 500px;
+.itemDetailImg {
+    padding: .5rem;
 }
 
-img.item-preview {
-    width: 80px;
-    height: 80px;
+.itemDetailImg img {
+    width: 4rem;
+    height: 4rem;
+    overflow: hidden;
 }
 
-img.payment_type_icon{
-    width: 50px;
+.itemListPrice {
+    font-size: 1rem;
+    color: #933;
+}
+
+.accDropdown {
+    
+}
+
+.accBtn {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    background: url(../images/icons/user.svg) no-repeat center center;
+    margin: 0;
+    padding: 0;
+}
+
+.accMenu {
+    /* transform: translate3d(-309px, 40px, 0px) !important; */
+    top: 40px !important;
+    /* left: -267px !important; */
+    /* right: 267px !important; */
+    padding: 0;
+    margin: 0;
+}
+
+.accItem {
+    padding: 1rem 1.5rem;
+}
+
+.logBox {
+    width: 100%;
+}
+
+.aa {
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
 }
