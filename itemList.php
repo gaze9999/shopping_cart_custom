@@ -17,18 +17,18 @@ require_once("./tpl/func-getRecursiveCategoryIds.php");
             <div class="row">
         <?php
         if(isset($_GET['categoryId'])){
-            $strCategoryIds = "";;
+            $strCategoryIds = "";
             $strCategoryIds.= $_GET['categoryId'];
             getRecursiveCategoryIds($pdo, $_GET['categoryId']);
 
             //SQL 敘述
-            $sql = "SELECT `items`.`itemId`, `items`.`itemName`, `items`.`itemImg`, `items`.`itemPrice`, 
-                            `items`.`itemQty`, `items`.`itemCategoryId`, `items`.`created_at`, `items`.`updated_at`,
-                            `categories`.`categoryName`
-                    FROM `items` INNER JOIN `categories`
-                    ON `items`.`itemCategoryId` = `categories`.`categoryId`
-                    WHERE `items`.`itemCategoryId` in ({$strCategoryIds})
-                    ORDER BY `items`.`itemId` ASC ";
+            $sql = "SELECT i.`itemId`, i.`itemName`, i.`itemImg`, i.`itemPrice`, 
+                            i.`itemQty`, i.`itemCategoryId`, i.`created_at`, i.`updated_at`,
+                            c.`categoryName`
+                    FROM `items` as i INNER JOIN `categories` as c
+                    ON i.`itemCategoryId` = c.`categoryId`
+                    WHERE i.`itemCategoryId` in ({$strCategoryIds})
+                    ORDER BY i.`itemId` ASC ";
 
             //查詢分頁後的商品資料
             $stmt = $pdo->prepare($sql);
@@ -39,25 +39,32 @@ require_once("./tpl/func-getRecursiveCategoryIds.php");
                 $arr = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 for($i = 0; $i < count($arr); $i++) {
             ?>
-                <div class="col-md-4 col-sm-6 filter-items" data-price="<?php echo $arr[$i]['itemPrice']; ?>">
-                    <div class="card mb-3 shadow-sm">
-                        <a href="./itemDetail.php?itemId=<?php echo $arr[$i]['itemId']; ?>">
-                            <img class="list-item" src="./images/items/<?php echo $arr[$i]['itemImg']; ?>">
-                        </a>
-                        <div class="card-body">
-                            <p class="card-text list-item-card"><?php echo $arr[$i]['itemName']; ?></p>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <small class="text-muted">價格：<?php echo $arr[$i]['itemPrice']; ?></small>
-                                <small class="text-muted">上架日期：<?php echo $arr[$i]['created_at']; ?></small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
+                    <?php require('./tpl/itemCard.php'); ?>
+
             <?php
                 }
             }
-        } 
-        ?>
+        } else {
+            //SQL 敘述
+            $sql = "SELECT `itemId`, `itemName`, `itemImg`, `itemPrice`, 
+                            `itemQty`, `itemCategoryId`, `created_at`, `updated_at`
+                     FROM `items` 
+                     ORDER BY `itemId` ASC ";
+
+            //查詢分頁後的商品資料
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute(); //$arrParam
+
+            //若商品項目個數大於 0，則列出商品
+            if($stmt->rowCount() > 0) {
+                $arr = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                for($i = 0; $i < count($arr); $i++) {
+            ?>
+
+            <?php require('./tpl/itemCard.php'); ?>
+
+            <?php } } } ?>
             </div>
         </div>
 
