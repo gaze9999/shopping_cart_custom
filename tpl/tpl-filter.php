@@ -1,8 +1,8 @@
 <div class="input-group mb-3">
-  <div class="input-group-prepend">
+  <!-- <div class="input-group-prepend">
     <span class="input-group-text" id="basic-addon1">Search</span>
   </div>
-  <input type="text" class="form-control" placeholder="商品名稱" aria-label="itemName" aria-describedby="basic-addon1">
+  <input type="text" class="form-control" placeholder="商品名稱" aria-label="itemName" aria-describedby="basic-addon1"> -->
 </div>
 <p>
   <label for="amount">商品價格範圍:</label>

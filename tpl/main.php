@@ -31,17 +31,17 @@
         ?>
             <div class="col-md-3 col-sm-6">
                 <div class="card mb-3 shadow-sm">
-                    <a href="./itemDetail.php?itemId=<?php echo $arr[$i]['itemId']; ?>">
-                        <img class="list-item" src="./images/items/<?php echo $arr[$i]['itemImg']; ?>">
+                    <a class="card-img-top list-item itemListImg d-flex center-all" href="./itemDetail.php?itemId=<?php echo $arr[$i]['itemId']; ?>">
+                        <img class="img-fluid" src="./images/items/<?php echo $arr[$i]['itemImg']; ?>">
                     </a>
                     <div class="card-body">
-                        <p class="card-text list-item-card"><?php echo $arr[$i]['itemName']; ?></p>
-                        <div class="d-flex justify-content-between align-items-center">
+                        <p class="card-text list-item-card itemListText"><?php echo $arr[$i]['itemName']; ?></p>
+                        <div class="d-flex center-all flex-column">
                             <div class="btn-group">
                                 <!-- <button type="button" class="btn btn-sm btn-outline-secondary">詳細</button> -->
                                 <!-- <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button> -->
                             </div>
-                            <small class="text-muted">上架日期：<?php echo $arr[$i]['created_at']; ?></small>
+                            <small class="itemListCTime">上架日期：<?php echo $arr[$i]['created_at']; ?></small>
                         </div>
                     </div>
                 </div>
