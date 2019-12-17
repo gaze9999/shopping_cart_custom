@@ -7,7 +7,7 @@
             </div>
             <div class="col-md-3"></div>
         </div>
-        <div class="row">
+        <div class="d-flex flex-wrap justtify-content-between">
         <?php
         //SQL 敘述
         $sql = "SELECT `items`.`itemId`, `items`.`itemName`, `items`.`itemImg`, `items`.`itemPrice`, 
@@ -29,8 +29,8 @@
             $arr = $stmt->fetchAll(PDO::FETCH_ASSOC);
             for($i = 0; $i < count($arr); $i++) {
         ?>
-            <div class="col-md-3 col-sm-6">
-                <div class="card mb-3 shadow-sm">
+            <div class="filter-items px-2">
+                <div class="card mb-3 shadow-sm itemListCard">
                     <a class="card-img-top list-item itemListImg d-flex center-all" href="./itemDetail.php?itemId=<?php echo $arr[$i]['itemId']; ?>">
                         <img class="img-fluid" src="./images/items/<?php echo $arr[$i]['itemImg']; ?>">
                     </a>
