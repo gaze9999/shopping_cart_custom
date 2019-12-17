@@ -14,7 +14,7 @@ require_once("./tpl/func-getRecursiveCategoryIds.php");
 
         <!-- 商品項目清單 -->
         <div class="col-md-8 col-sm-6">
-            <div class="row">
+            <div class="d-flex flex-wrap">
         <?php
         if(isset($_GET['categoryId'])){
             $strCategoryIds = "";
@@ -39,9 +39,7 @@ require_once("./tpl/func-getRecursiveCategoryIds.php");
                 $arr = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 for($i = 0; $i < count($arr); $i++) {
             ?>
-
-                    <?php require('./tpl/itemCard.php'); ?>
-
+            <?php require('./tpl/itemCard.php'); ?>
             <?php
                 }
             }
@@ -61,9 +59,7 @@ require_once("./tpl/func-getRecursiveCategoryIds.php");
                 $arr = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 for($i = 0; $i < count($arr); $i++) {
             ?>
-
             <?php require('./tpl/itemCard.php'); ?>
-
             <?php } } } ?>
             </div>
         </div>

@@ -1,4 +1,4 @@
-<div class="col-md-4 col-sm-6 filter-items" data-price="<?php echo $arr[$i]['itemPrice']; ?>">
+<div class="mx-2 filter-items" data-price="<?php echo $arr[$i]['itemPrice']; ?>">
     <div class="card mb-3 shadow-sm itemListCard">
         <a class="card-img-top list-item itemListImg d-flex center-all" href="./itemDetail.php?itemId=<?php echo $arr[$i]['itemId']; ?>">
             <img class="img-fluid" src="./images/items/<?php echo $arr[$i]['itemImg']; ?>">

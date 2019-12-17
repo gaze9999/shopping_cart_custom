@@ -1,10 +1,13 @@
 .itemListCard {
-    width: 100%;
+    min-width: 150px;
+    width: 12vw;
     max-height: 20rem;
 }
 
 .itemListImg {
-    height: 20vw;
+    height: 10vw;
+    min-width: 150px;
+    max-width: 12vw;
     min-height: 10rem;
     overflow: hidden;
     background: #eee;
