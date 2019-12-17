@@ -86,6 +86,12 @@ require_once("./tpl/func-getRecursiveCategoryIds.php");
             </div>
             <div class="row mt-4">
                 <div class="col-md-12">商品描述</div>
+                <div class="col-md-12">商品留言列表
+                <?php require_once('./tpl/tpl-comments-list.php'); ?>
+                </div>
+                <div class="col-md-12">
+                <?php require_once('./tpl/tpl-comments.php'); ?>
+                </div>
             </div>
         </div>
 
