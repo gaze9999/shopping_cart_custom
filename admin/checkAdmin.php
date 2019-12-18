@@ -1,5 +1,7 @@
 <?php
 session_start(); //啟動 session
+require_once('../tpl/tpl-html-head.php');
+require_once('../tpl/tpl-html-foot.php'); 
 
 //判斷是否登入 (確認先前指派的 session 索引是否存在)
 if( !isset($_SESSION['username']) && !isset($_SESSION['identity']) ) {

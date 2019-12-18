@@ -2,7 +2,6 @@
 require_once('./checkAdmin.php'); //引入登入判斷
 require_once('../db.inc.php'); //引用資料庫連線
 
-
 $sqlTotal = "SELECT count(1) FROM `items`"; //SQL 敘述
 $total = $pdo->query($sqlTotal)->fetch(PDO::FETCH_NUM)[0]; //取得總筆數
 $numPerPage = 5; //每頁幾筆
@@ -92,6 +91,7 @@ if($totalCatogories > 0) {
                 <td class="border">
                     <a href="./edit.php?itemId=<?php echo $arr[$i]['itemId']; ?>">商品編輯</a> | 
                     <a href="./multipleImages.php?itemId=<?php echo $arr[$i]['itemId']; ?>">多圖設定</a>
+                    <a href="./comments.php?itemId=<?php echo $arr[$i]['itemId']; ?>">留言回覆</a>
                 </td>
             </tr>
         <?php
