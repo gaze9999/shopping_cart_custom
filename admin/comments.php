@@ -20,9 +20,11 @@ echo "<hr>";
                 $RatSumRaram = [
                     $_GET['itemId']
                 ];
+                // $stmtRatSum = $pdo->prepare($sqlRatSum);
+                // $stmtRatSum->execute($RatSumRaram);
+                // $stmtRatSum = $stmtRatSum->fetchAll(PDO::FETCH_ASSOC);
             } else {
                 $RatSumRaram = 0;
-                exit;
             };
             
             $stmtRatSum = $pdo->prepare($sqlRatSum);
@@ -46,7 +48,7 @@ echo "<hr>";
                 // $arr = $stmtComList->fetchAll(PDO::FETCH_ASSOC);
                 // echo "<pre>";
                 // echo $arr[0]['id'];
-                // // print_r($arr);
+                // print_r($arr);
                 // echo "</pre>";
                 // exit();
         
@@ -66,6 +68,48 @@ echo "<hr>";
                         <small class="card-tex">留言時間: <?php echo $arr[$i]['createdTime']; ?></small>
                     </div>
                 </div>
+
+                <?php
+                    $sqlAdCom = "SELECT `id`, `author`, `contents`, `rating`, `createdTime`, `itemId`, `updatedTime`, `parentId` ";
+                    $sqlAdCom.= "FROM `comments` ";
+                    $sqlAdCom.= "WHERE `itemId` = ? AND `parentId` = ? ";
+                    $sqlAdCom.= "ORDER BY `createdTime` DESC ";
+
+                    $AdComParam = [
+                        $_GET['itemId'],
+                        $arr[$i]['parentId']
+                    ];
+
+                    // echo "<pre>";
+                    // print_r($sqlAdCom);
+                    // echo "</pre>";
+                    // exit();
+            
+                    $stmtAdCom = $pdo->prepare($sqlAdCom);
+                    $stmtAdCom->execute($AdComParam);
+                    // $arr = $stmtComList->fetchAll(PDO::FETCH_ASSOC);
+                    // echo "<pre>";
+                    // print_r($stmtAdCom);
+                    // echo "</pre>";
+                    // exit();
+            
+                    if ($stmtAdCom->rowCount() > 0) {
+                        $arr2 = $stmtAdCom = $stmtAdCom->fetchAll(PDO::FETCH_ASSOC);
+                        for($i = 0; $i < count($arr); $i++) {
+                ?>
+
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">管理員</h5>
+                        <div>
+                        <p class="card-text">留言內容: </p><br>
+                        <p class="card-text"><?php echo $arr[$i]['contents']; ?></p>
+                        </div>
+                        <small class="card-tex">留言時間: <?php echo $arr[$i]['createdTime']; ?></small>
+                    </div>
+                </div>
+
+                <?php } } ?>
                 
                 <hr>
                 <div class="col-md-12 d-flex justify-content-center">
