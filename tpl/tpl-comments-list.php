@@ -53,4 +53,4 @@ if (!$RatSumNum > 0) {
     </div>
 
     <?php } } ?>
-</car>
+</div>

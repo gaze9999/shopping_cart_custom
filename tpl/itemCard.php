@@ -14,11 +14,12 @@
     // echo "<pre>";
     // print_r($arr);
     // echo "</pre>";
+    // exit;
 
     $stmtRatSum = $pdo->prepare($sqlRatSum);
     $stmtRatSum->execute();
     $stmtRatSum = $stmtRatSum->fetchAll(PDO::FETCH_ASSOC);
-
+    
     // echo "<pre>";
     // print_r($stmtRatSum);
     // echo "</pre>";
@@ -34,14 +35,14 @@
         <div class="card-body">
             <p class="card-text list-item-card itemListText"><?php echo $arr[$i]['itemName']; ?></p>
             <div class="d-flex center-all flex-column">
-                <small class="itemListPrice">總讚數：<?php
-                
-                if (isset($stmtRatSum)) {
-                    echo $stmtRatSum[$i]['rating']; 
+                <small class="itemListPrice">總讚數：
+                <!-- <?php echo $stmtRatSum[$i]['rating'];
+                if (isset($stmtRatSum[$i]['rating'])) {
                 } else {
                     echo "0";
-                }
-                ?></small>
+                };
+                ?> -->
+                </small>
                 <small class="itemListPrice">價格：<?php echo $arr[$i]['itemPrice']; ?></small>
                 <small class="itemListCTime">上架日期：<?php echo $arr[$i]['created_at']; ?></small>
             </div>
