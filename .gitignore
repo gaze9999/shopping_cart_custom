@@ -1,0 +1,4 @@
+*.xlsx
+
+vendor/
+php/
