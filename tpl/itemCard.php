@@ -13,11 +13,12 @@
     $stmtRatSum->execute();
     $stmtRatSum = $stmtRatSum->fetchAll(PDO::FETCH_ASSOC);
 
+    if (isset($stmtRatSum)) {
     for ($x=0; $x< count($stmtRatSum); $x++) {
     $rating[$x] = array('rating'=>$stmtRatSum[$x]['ratingSum']);
     $arr[$x] = array_merge($arr[$x], $rating[$x]);
-    };
-
+    }; };
+    
     // echo "<pre>";
     // print_r($rating);
     // print_r($stmtRatSum);
@@ -34,8 +35,8 @@
         <div class="card-body">
             <p class="card-text list-item-card itemListText"><?php echo $arr[$i]['itemName']; ?></p>
             <div class="d-flex center-all flex-column">
-                <small class="itemListPrice">總讚數：
-                <?php echo $arr[$i]['rating']; ?>
+                <small class="itemListPrice">
+                <?php if (isset($stmtRatSum)) { echo "總讚數：".$arr[$i]['rating']; } ?>
 
                 </small>
                 <small class="itemListPrice">價格：<?php echo $arr[$i]['itemPrice']; ?></small>
