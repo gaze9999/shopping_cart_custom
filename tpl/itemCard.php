@@ -1,15 +1,8 @@
 <?php
-    $sqlRatSum = "SELECT m.`rating`, m.`item_id`, i.`itemId`, SUM(rating) AS 'rating' ";
-    $sqlRatSum.= "FROM `comments` as m INNER JOIN `items` as i ";
-    $sqlRatSum.= "ON m.`item_id` = i.`itemId` ";
-    $sqlRatSum.= "GROUP BY i.`itemId` ";
-
-    // $sqlRatSum.= "WHERE m.`item_id` = ? ";
-
-    $stmtRatSum = $pdo->prepare($sqlRatSum);
-    $stmtRatSum->execute();
-
-    // $RatSumPARAM = 1;
+    $sqlRatSum = "SELECT m.`rating`, m.`itemId`, i.`itemId`, COALESCE(SUM(rating), 0) as 'ratingSum'
+                    FROM `comments` as m RIGHT JOIN `items` as i
+                    ON m.`itemId` = i.`itemId`
+                    GROUP BY i.`itemId` ";
 
     // echo "<pre>";
     // print_r($arr);
@@ -19,12 +12,18 @@
     $stmtRatSum = $pdo->prepare($sqlRatSum);
     $stmtRatSum->execute();
     $stmtRatSum = $stmtRatSum->fetchAll(PDO::FETCH_ASSOC);
-    
+
+    for ($x=0; $x< count($stmtRatSum); $x++) {
+    $rating[$x] = array('rating'=>$stmtRatSum[$x]['ratingSum']);
+    $arr[$x] = array_merge($arr[$x], $rating[$x]);
+    };
+
     // echo "<pre>";
+    // print_r($rating);
     // print_r($stmtRatSum);
+    // print_r($arr);
     // echo "</pre>";
     // exit;
-
 ?>
 
 <div class="mx-2 filter-items" data-price="<?php echo $arr[$i]['itemPrice']; ?>">
@@ -36,12 +35,8 @@
             <p class="card-text list-item-card itemListText"><?php echo $arr[$i]['itemName']; ?></p>
             <div class="d-flex center-all flex-column">
                 <small class="itemListPrice">總讚數：
-                <!-- <?php echo $stmtRatSum[$i]['rating'];
-                if (isset($stmtRatSum[$i]['rating'])) {
-                } else {
-                    echo "0";
-                };
-                ?> -->
+                <?php echo $arr[$i]['rating']; ?>
+
                 </small>
                 <small class="itemListPrice">價格：<?php echo $arr[$i]['itemPrice']; ?></small>
                 <small class="itemListCTime">上架日期：<?php echo $arr[$i]['created_at']; ?></small>
