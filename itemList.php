@@ -22,9 +22,7 @@ require_once("./tpl/func-getRecursiveCategoryIds.php");
             getRecursiveCategoryIds($pdo, $_GET['categoryId']);
 
             //SQL 敘述
-            $sql = "SELECT i.`itemId`, i.`itemName`, i.`itemImg`, i.`itemPrice`, 
-                            i.`itemQty`, i.`itemCategoryId`, i.`created_at`, i.`updated_at`,
-                            c.`categoryName`
+            $sql = "SELECT i.`itemId`, i.`itemName`, i.`itemImg`, i.`itemPrice`, i.`itemQty`, i.`itemCategoryId`, i.`created_at`, i.`updated_at`, c.`categoryName`
                     FROM `items` as i INNER JOIN `categories` as c
                     ON i.`itemCategoryId` = c.`categoryId`
                     WHERE i.`itemCategoryId` in ({$strCategoryIds})
@@ -46,7 +44,7 @@ require_once("./tpl/func-getRecursiveCategoryIds.php");
         } else {
             //SQL 敘述
             $sql = "SELECT `itemId`, `itemName`, `itemImg`, `itemPrice`, 
-                            `itemQty`, `itemCategoryId`, `created_at`, `updated_at`
+                           `itemQty`, `itemCategoryId`, `created_at`, `updated_at`
                      FROM `items` 
                      ORDER BY `itemId` ASC ";
 
