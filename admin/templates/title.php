@@ -1,5 +1,6 @@
 <nav>
 這裡是後端管理頁面 | 
+<a href="../index.php">回首頁</a> | 
 <a href="./category.php">編輯類別</a> | 
 <a href="./paymentType.php">編輯付款方式</a> | 
 <a href="./admin.php">商品列表</a> | 
