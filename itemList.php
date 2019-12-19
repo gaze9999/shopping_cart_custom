@@ -20,45 +20,28 @@ require_once("./tpl/func-getRecursiveCategoryIds.php");
             $strCategoryIds = "";
             $strCategoryIds.= $_GET['categoryId'];
             getRecursiveCategoryIds($pdo, $_GET['categoryId']);
+        }
 
-            //SQL 敘述
-            $sql = "SELECT i.`itemId`, i.`itemName`, i.`itemImg`, i.`itemPrice`, i.`itemQty`, i.`itemCategoryId`, i.`created_at`, i.`updated_at`, c.`categoryName`
-                    FROM `items` as i INNER JOIN `categories` as c
-                    ON i.`itemCategoryId` = c.`categoryId`
-                    WHERE i.`itemCategoryId` in ({$strCategoryIds})
-                    ORDER BY i.`itemId` ASC ";
+        //SQL 敘述
+        $sql = "SELECT i.`itemId`, i.`itemName`, i.`itemImg`, i.`itemPrice`, i.`itemQty`, i.`itemCategoryId`, i.`created_at`, i.`updated_at`, c.`categoryName`, COALESCE(SUM(m.`rating`), 0) as 'ratingSum'
+                FROM `items` as i INNER JOIN `categories` as c LEFT JOIN `comments` as m
+                ON i.`itemCategoryId` = c.`categoryId` AND m.`itemId` = i.`itemId` ";
 
+        if(isset($_GET['categoryId'])) {$sql .= "WHERE i.`itemCategoryId` in ({$strCategoryIds}) ";}
+            $sql .= "GROUP BY i.`itemId` ";
+            $sql .= "ORDER BY i.`itemId` ASC ";
+            
             //查詢分頁後的商品資料
             $stmt = $pdo->prepare($sql);
-            $stmt->execute(); //$arrParam
-
+            $stmt->execute();
+    
             //若商品項目個數大於 0，則列出商品
             if($stmt->rowCount() > 0) {
                 $arr = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 for($i = 0; $i < count($arr); $i++) {
             ?>
             <?php require('./tpl/itemCard.php'); ?>
-            <?php
-                }
-            }
-        } else {
-            //SQL 敘述
-            $sql = "SELECT `itemId`, `itemName`, `itemImg`, `itemPrice`, 
-                           `itemQty`, `itemCategoryId`, `created_at`, `updated_at`
-                     FROM `items` 
-                     ORDER BY `itemId` ASC ";
-
-            //查詢分頁後的商品資料
-            $stmt = $pdo->prepare($sql);
-            $stmt->execute(); //$arrParam
-
-            //若商品項目個數大於 0，則列出商品
-            if($stmt->rowCount() > 0) {
-                $arr = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                for($i = 0; $i < count($arr); $i++) {
-            ?>
-            <?php require('./tpl/itemCard.php'); ?>
-            <?php } } } ?>
+        <?php } } ?>
             </div>
         </div>
 
