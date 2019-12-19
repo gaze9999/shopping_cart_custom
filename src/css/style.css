@@ -1,3 +1,7 @@
+body {
+    background: #997;
+}
+
 .itemListCard {
     min-width: 150px;
     width: 12vw;
