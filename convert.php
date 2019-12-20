@@ -1,5 +1,5 @@
 <?php
-require_once('vendor/autoload.php');
+require_once('./vendor/autoload.php');
 require_once('./db.inc.php');
 
 // use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -13,14 +13,24 @@ require_once('./db.inc.php');
 // echo $cellValue;
 
 
-$inputFileName = './itemList.xlsx';
+$inputFileName = './test2.xlsx';
 $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($inputFileName);
+
+// echo "<pre>";
+// print_r($inputFileName);
+// echo $inputFileName;
+// echo "</pre>";
+// exit;
 
 $highestRow = $spreadsheet->getActiveSheet()->getHighestRow();
 // $sheetRegions = $spreadsheet->getSheet(0);
 // $sheetPrefectures = $spreadsheet->getSheet(1);
 // $sheetBreweries = $spreadsheet->getSheet(2);
-$sheetItems = $spreadsheet->getSheet(0);
+// $sheetItems = $spreadsheet->getSheet(0);
+// $sheetItems = $spreadsheet->getSheet(0);
+// $sheetRice = $spreadsheet->getSheet(2);
+$sheetVar = $spreadsheet->getSheet(1);
+
 
 // echo "Sheet Count: ".$spreadsheet->getSheetCount().
 // "<br>";
@@ -108,27 +118,55 @@ $sheetItems = $spreadsheet->getSheet(0);
 //     $stmtBre->execute($breParam);
 // }
 
-$itemSql = "INSERT INTO `sake_items` (`itemName`, `regName`, `prefName`, `breName`,
-            `capacity`, `nihonshudo`, `alcohol`, `price`, `rice`) ";
-$itemSql.= "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+// $itemSql = "INSERT INTO `sake_items` (`breId`, `itemName`, `vId`,
+//             `capacity`, `nihonshudo`, `alcohol`, `price`, `riceId`) ";
+// $itemSql.= "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+// for($i = 2; $i <= $highestRow; $i++) {
+//     //若是某欄位值為空，代表那一列可能都沒資料，便跳出迴圈
+//     if( $sheetItems->getCell('A'.$i)->getValue() === '' || $sheetItems->getCell('A'.$i)->getValue() === null ) break;
+
+//     $itemParam = [
+//         $sheetItems->getCell('D'.$i)->getValue(),
+//         $sheetItems->getCell('E'.$i)->getValue(),
+//         $sheetItems->getCell('F'.$i)->getValue(),
+//         $sheetItems->getCell('G'.$i)->getValue(),
+//         $sheetItems->getCell('H'.$i)->getValue(),
+//         $sheetItems->getCell('I'.$i)->getValue(),
+//         $sheetItems->getCell('J'.$i)->getValue(),
+//         $sheetItems->getCell('K'.$i)->getValue()
+//     ];
+    
+//     $stmtItem = $pdo->prepare($itemSql);
+//     $stmtItem->execute($itemParam);
+// }
+
+// $riceSql = "INSERT INTO `sake_rice` (`riceName`) 
+//             VALUES (?) ";
+
+// for($i = 2; $i <= $highestRow; $i++) {
+//     if( $sheetRice->getCell('A'.$i)->getValue() === '' || $sheetRice->getCell('A'.$i)->getValue() === null ) break;
+//     $riceParam = [
+//         $sheetRice->getCell('B'.$i)->getValue()
+//     ];
+        
+//     $stmtRice = $pdo->prepare($riceSql);
+//     $stmtRice->execute($riceParam);
+// }
+
+$varSql = "INSERT INTO `sake_varieties` (`varieties`, `vCatag`, `alchoholAdd`, `seimaibuai`) 
+           VALUES (?, ?, ?, ? ) ";
 
 for($i = 2; $i <= $highestRow; $i++) {
-    //若是某欄位值為空，代表那一列可能都沒資料，便跳出迴圈
-    if( $sheetItems->getCell('A'.$i)->getValue() === '' || $sheetItems->getCell('A'.$i)->getValue() === null ) break;
+    if( $sheetVar->getCell('A'.$i)->getValue() === '' || $sheetVar->getCell('A'.$i)->getValue() === null ) break;
 
-    $itemParam = [
-        $sheetItems->getCell('D'.$i)->getValue(),
-        $sheetItems->getCell('B'.$i)->getValue(),
-        $sheetItems->getCell('C'.$i)->getValue(),
-        $sheetItems->getCell('D'.$i)->getValue(),
-        $sheetItems->getCell('G'.$i)->getValue(),
-        $sheetItems->getCell('H'.$i)->getValue(),
-        $sheetItems->getCell('I'.$i)->getValue(),
-        $sheetItems->getCell('J'.$i)->getValue(),
-        $sheetItems->getCell('K'.$i)->getValue()
+    $varParam = [
+        $sheetVar->getCell('B'.$i)->getValue(),
+        $sheetVar->getCell('C'.$i)->getValue(),
+        $sheetVar->getCell('D'.$i)->getValue(),
+        $sheetVar->getCell('E'.$i)->getValue()
     ];
-    
-    $stmtItem = $pdo->prepare($itemSql);
-    $stmtItem->execute($itemParam);
+        
+    $stmtVar = $pdo->prepare($varSql);
+    $stmtVar->execute($varParam);
 }
-?>
