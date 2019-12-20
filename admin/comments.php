@@ -1,144 +1,119 @@
 <?php
-require_once('./checkAdmin.php'); //引用資料庫連線
+require_once('./checkAdmin.php'); //引入登入判斷
 require_once('../db.inc.php'); //引用資料庫連線
-require_once('./templates/title.php');
-echo "<hr>";
-// require_once("./checkSession.php");
 ?>
+<!DOCTYPYE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>我的 PHP 程式</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <style>
+    .border {
+        border: 1px solid;
+    }
+    </style>
+    
+</head>
+<body>
+<?php require_once('./templates/title.php'); ?>
+<hr />
+<h3>評論頁面</h3>
 
 <div class="container">
-    <div class="row">
-        <div class="col-md-12">
-        <h2>商品留言</h2><br>
 
-        <?php
-            $sqlRatSum = "SELECT SUM(rating) as 'rating'";
-            $sqlRatSum.= "FROM `comments` ";
-            $sqlRatSum.= "WHERE `itemId` = ? ";
-                    
-            if (isset($_GET['itemId'])) {
-                $RatSumRaram = [
-                    $_GET['itemId']
-                ];
-                // $stmtRatSum = $pdo->prepare($sqlRatSum);
-                // $stmtRatSum->execute($RatSumRaram);
-                // $stmtRatSum = $stmtRatSum->fetchAll(PDO::FETCH_ASSOC);
-            } else {
-                $RatSumRaram = 0;
-            };
-            
-            $stmtRatSum = $pdo->prepare($sqlRatSum);
-            $stmtRatSum->execute($RatSumRaram);
-            $stmtRatSum = $stmtRatSum->fetchAll(PDO::FETCH_ASSOC);
-            
-            $RatSumNum = $stmtRatSum[0]['rating'];
-            if (!isset($RatSumNum)) {
-                    $RatSumNum = 0; } else { ?>
-                <span id="ratCon" name="ratCon"><?php echo "總讚數: ".$RatSumNum; ?></span> 
-            <?php }; ?>
-            
-            <?php
-                $sqlComList = "SELECT `id`, `author`, `contents`, `rating`, `createdTime`, `itemId`, `updatedTime`, `parentId` ";
-                $sqlComList.= "FROM `comments` ";
-                $sqlComList.= "WHERE `itemId` = ? ";
-                $sqlComList.= "ORDER BY `createdTime` DESC ";
-        
-                $stmtComList = $pdo->prepare($sqlComList);
-                $stmtComList->execute($RatSumRaram);
-                // $arr = $stmtComList->fetchAll(PDO::FETCH_ASSOC);
-                // echo "<pre>";
-                // echo $arr[0]['id'];
-                // print_r($arr);
-                // echo "</pre>";
-                // exit();
-        
-                if ($stmtComList->rowCount() > 0) {
-                    $arr = $stmtComList = $stmtComList->fetchAll(PDO::FETCH_ASSOC);
-                    for($i = 0; $i < count($arr); $i++) {
-            ?>
+<?php
+if(isset($_GET['itemId'])){
 
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">留言者: <?php echo $arr[$i]['author']; ?></h5>
-                        <div>
-                        <p class="card-text">留言內容: </p><br>
-                        <p class="card-text"><?php echo $arr[$i]['contents']; ?></p>
-                        </div>
-                        <small class="card-tex">留言時間: <?php echo $arr[$i]['createdTime']; ?></small>
+    //SQL 敘述
+    $sql = "SELECT `id`, `author`,`contents`, `rating`, `itemId`, `createdTime`, `updatedTime`
+            FROM `comments`
+            WHERE `itemId` = ? AND `parentId` = 0
+            ORDER BY `createdTime` DESC ";
+
+    //查詢分頁後的商品資料
+    $stmt = $pdo->prepare($sql);
+    $arrParam = [ $_GET['itemId'] ];
+    $stmt->execute($arrParam); //
+
+    //若商品項目個數大於 0，則列出商品
+    if($stmt->rowCount() > 0) {
+        $arr = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        for($i = 0; $i < count($arr); $i++) {
+    ?>
+        <form name="myForm" method="POST" action="./insertComments.php">
+            <div class="row">
+                <div class="media">
+                    <img src="http://www.likoda.com.tw/style/images/frontpage/default_user_icon.png" class="mr-3" alt="...">
+                    <div class="media-body">
+                        <h5 class="mt-0"><?php echo $arr[$i]["author"]; ?></h5>
+                        <p><?php echo nl2br($arr[$i]["contents"]); ?></p>
+                        <p>評分: <?php echo $arr[$i]["rating"]; ?></p>
+                        <p>新增時間: <?php echo $arr[$i]["createdTime"]; ?></p>
+                        <p>更新時間: <?php echo $arr[$i]["updatedTime"]; ?></p>
                     </div>
-                </div>
-
-                <?php
-                    $sqlAdCom = "SELECT `id`, `author`, `contents`, `rating`, `createdTime`, `itemId`, `updatedTime`, `parentId` ";
-                    $sqlAdCom.= "FROM `comments` ";
-                    $sqlAdCom.= "WHERE `itemId` = ? AND `parentId` = ? ";
-                    $sqlAdCom.= "ORDER BY `createdTime` DESC ";
-
-                    $AdComParam = [
-                        $_GET['itemId'],
-                        $arr[$i]['parentId']
-                    ];
-
-                    // echo "<pre>";
-                    // print_r($sqlAdCom);
-                    // echo "</pre>";
-                    // exit();
-            
-                    $stmtAdCom = $pdo->prepare($sqlAdCom);
-                    $stmtAdCom->execute($AdComParam);
-                    // $arr = $stmtComList->fetchAll(PDO::FETCH_ASSOC);
-                    // echo "<pre>";
-                    // print_r($stmtAdCom);
-                    // echo "</pre>";
-                    // exit();
-            
-                    if ($stmtAdCom->rowCount() > 0) {
-                        $arr2 = $stmtAdCom = $stmtAdCom->fetchAll(PDO::FETCH_ASSOC);
-                        for($i = 0; $i < count($arr); $i++) {
-                ?>
-
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">管理員</h5>
-                        <div>
-                        <p class="card-text">留言內容: </p><br>
-                        <p class="card-text"><?php echo $arr[$i]['contents']; ?></p>
-                        </div>
-                        <small class="card-tex">留言時間: <?php echo $arr[$i]['createdTime']; ?></small>
-                    </div>
-                </div>
-
-                <?php } } ?>
-                
-                <hr>
-                <div class="col-md-12 d-flex justify-content-center">
-                    <form name="myForm" method="POST" action="./insertComment.php">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>管理員回覆</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <textarea id="ComContent" name="content" rows=""></textarea>
-                                </td>
-                            </tr>
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                            <td colspan="5"><input type="submit" name="smb" value="留言"></td>
-                            </tr>
-                        </tfoot>
-                    </table>
-                    <input type="hidden" name="itemId" value="<?php echo $_GET['itemId'] ?>">
-                    <input type="hidden" name="parentId" value="<?php echo $arr[$i]['id'] ?>">
-                    </form>
                 </div>
             </div>
-            <?php } } ?>
-        </div>
-    </div>
+
+            <div class="row mb-5">
+            <?php
+            $sqlReply = "SELECT `id`, `author`,`contents`, `rating`, `itemId`, `createdTime`, `updatedTime`
+                        FROM `comments`
+                        WHERE `itemId` = ? AND `parentId` = ?
+                        ORDER BY `createdTime` ASC ";
+            //查詢分頁後的商品資料
+            $stmtReply = $pdo->prepare($sqlReply);
+            $arrReplyParam = [ 
+                $_GET['itemId'],
+                $arr[$i]["id"]
+            ];
+            $stmtReply->execute($arrReplyParam); //
+
+            //若商品項目個數大於 0，則列出商品
+            if($stmtReply->rowCount() > 0) {
+                $arrReply = $stmtReply->fetchAll(PDO::FETCH_ASSOC);
+                for($j = 0; $j < count($arrReply); $j++) {
+            ?>
+                <div class="row">
+                    <div class="col-md-3"><?php echo $arrReply[$j]['author'] ?>表示</div>
+                    <div class="col-md-9"><?php echo nl2br($arrReply[$j]['contents']) ?></div>
+                </div>
+            <?php
+                }
+            } else {
+                echo "管理員尚未回覆";
+            }
+            ?>
+            </div>
+
+            <div class="row">回覆：<?php echo $arr[$i]["author"]; ?></div>
+            
+            <div class="row">
+                <label>姓名：</label><?php echo $_SESSION['name']; ?>
+            </div>
+            <div class="row">
+                <label>內容：</label><textarea name="content" rows="15" cols="100"></textarea>
+            </div>
+            <div class="row mb-5">
+                <input type="submit" name="smb" value="送出">
+            </div>
+            <input type="hidden" name="parentId" value="<?php echo $arr[$i]["id"]; ?>">
+            <input type="hidden" name="itemId" value="<?php echo $_GET['itemId']; ?>">
+        </form>
+    <?php
+        }
+    }
+} 
+?>
 </div>
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<script src="./js/custom.js"></script>
+</body>
+</html>
