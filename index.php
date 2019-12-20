@@ -2,8 +2,8 @@
 session_start();
 require_once('./db.inc.php');
 require_once('./tpl/tpl-html-head.php');
-require_once('./tpl/header.php');
-require_once('./tpl/slick.php');
+require_once('./tpl/header.php'); 
+require_once('./tpl/tpl-carousel.php'); 
 require_once('./tpl/main.php');
 require_once('./tpl/footer.php'); 
 require_once('./tpl/tpl-html-foot.php'); 
