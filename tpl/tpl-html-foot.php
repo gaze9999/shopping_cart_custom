@@ -5,7 +5,8 @@
 
 <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
 
-<script src="./js/custom.js"></script>
+<script src="./src/js/rater.min.js"></script>
+<script src="./src/js/custom.js"></script>
 
 <script>
     $('.slickShow').slick({
