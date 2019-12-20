@@ -1,4 +1,6 @@
 *.xlsx
+*.sql
+*.code-workspace
 
 vendor/
 php/
