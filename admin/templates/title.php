@@ -6,6 +6,6 @@
 <a href="./admin.php">商品列表</a> | 
 <a href="./new.php">新增商品</a> | 
 <a href="./orders.php">訂單一覽</a> | 
-<a href="./comments.php">商品留言</a> | 
+<a href="./phpTest.php">測試頁面</a> | 
 <a href="../logout.php?logout=1">登出</a>
 </nav>
