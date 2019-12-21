@@ -29,15 +29,11 @@
     color: #933;
 }
 
-.accDropdown {
-    
-}
-
 .accBtn {
     width: 2.5rem;
     height: 2.5rem;
     border-radius: 50%;
-    background: url(../images/icons/user.svg) no-repeat center center;
+    background: url(../../images/icons/user.svg) no-repeat center center;
     margin: 0;
     padding: 0;
 }

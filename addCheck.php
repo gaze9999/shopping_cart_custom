@@ -12,7 +12,7 @@ if(!isset($_POST["paymentTypeId"])){
     header("Refresh: 3; url=./myCart.php");
     echo "請選擇付款方式…3秒後回購物車列表";
     exit();
-}
+};
 
 //先取得訂單編號
 $sqlOrder = "INSERT INTO `orders` (`username`,`paymentTypeId`) VALUES (?,?)";
@@ -39,7 +39,7 @@ for($i = 0; $i < count($_POST["itemId"]); $i++){
     ];
     $stmtItemList->execute($arrParamItemList);
     $count += $stmtItemList->rowCount();
-}
+};
 
 if($count > 0) {
     header("Refresh: 3; url=./check.php");
@@ -59,4 +59,4 @@ if($count > 0) {
     $objResponse['info'] = "訂單新增失敗";
     echo json_encode($objResponse, JSON_UNESCAPED_UNICODE);
     exit();
-}
+};

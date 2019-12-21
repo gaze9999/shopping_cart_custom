@@ -12,7 +12,6 @@ if($_POST["username"] == "" || $_POST["pwd"] == "" || $_POST["name"] == "" ||
     echo json_encode($objResponse, JSON_UNESCAPED_UNICODE);
     exit();
 }
-
 $sql = "INSERT INTO `users` (`username`,`pwd`,`name`,`gender`,`phoneNumber`,`birthday`,`address`) 
         VALUES (?,?,?,?,?,?,?)";
 
@@ -43,13 +42,12 @@ if($stmt->rowCount() > 0) {
     $objResponse['info'] = "註冊成功";
     echo json_encode($objResponse, JSON_UNESCAPED_UNICODE);
     exit();
-} else {
+ } else {
     header("Refresh: 3; url=./index.php");
     $objResponse['success'] = false;
     $objResponse['code'] = 400;
     $objResponse['info'] = "註冊失敗";
     echo json_encode($objResponse, JSON_UNESCAPED_UNICODE);
     exit();
-}
-
+};
 ?>

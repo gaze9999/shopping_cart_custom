@@ -68,7 +68,7 @@ if(isset($_GET['itemId'])){
                 $_GET['itemId'],
                 $arr[$i]["id"]
             ];
-            $stmtReply->execute($arrReplyParam); //
+            $stmtReply->execute($arrReplyParam);
 
             //若商品項目個數大於 0，則列出商品
             if($stmtReply->rowCount() > 0) {
