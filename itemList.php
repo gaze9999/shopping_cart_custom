@@ -17,7 +17,7 @@ require_once("./tpl/func-getRecursiveCategoryIds.php");
             <div class="row">
             <?php
             if(isset($_GET['categoryId'])){
-                $strCategoryIds = "";;
+                $strCategoryIds = "";
                 $strCategoryIds.= $_GET['categoryId'];
                 getRecursiveCategoryIds($pdo, $_GET['categoryId']);
             }
@@ -56,3 +56,4 @@ require_once("./tpl/func-getRecursiveCategoryIds.php");
 
 <?php require_once('./tpl/footer.php'); ?>
 <?php require_once('./tpl/tpl-html-foot.php'); ?>
+<script src="./src/js/func-loadList.js"></script>
